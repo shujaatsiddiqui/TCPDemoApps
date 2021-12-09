@@ -32,7 +32,7 @@ namespace TCPListenerDemoApp
         }
 
         private static void OnAccept(IAsyncResult ar)
-        {
+         {
             TcpListener listener = (TcpListener)ar.AsyncState;
 
 
@@ -46,11 +46,14 @@ namespace TCPListenerDemoApp
             gatewayConnectionPlugin.Initialize(tcpClient);
             gatewayConnectionPlugin.InitializeAsync();
 
-            new Thread(() => Send(gatewayConnectionPlugin)).Start();
+            //new Thread(() => Send(gatewayConnectionPlugin)).Start();
 
-            // ReadData(tcpClient);
+            new Thread(() => Read(gatewayConnectionPlugin)).Start();
 
+            //ReadData(tcpClient);
 
+            IPEndPoint endPointsInfo = (IPEndPoint)tcpClient.Client.RemoteEndPoint;
+            Console.WriteLine(string.Format("Socket accepted and requested for Mac Id from thermostat. @Cid: {0} , IPAddress: {1}, Port: {2}", "cid", endPointsInfo?.Address, endPointsInfo?.Port));
 
             //TestClass cc = new TestClass();
             //cc.SocketClassObj = tcpClient.Client;
@@ -73,24 +76,38 @@ namespace TCPListenerDemoApp
             }
         }
 
-        private static void ReadData(TcpClient tcpClient)
+        private static void Read(EthernetGatewayHandler gatewayConnectionPlugin)
         {
-            StringBuilder messageBuilder = new StringBuilder();
-
-            int bytesRead;
-            using (NetworkStream ns = tcpClient.GetStream())
+            while (true)
             {
-                int messageChunkSize = 10;
-                do
+                Thread.Sleep(1000);
+                foreach (var item in gatewayConnectionPlugin.SyncReceive())
                 {
-                    byte[] chunks = new byte[messageChunkSize];
-                    bytesRead = ns.Read(chunks, 0, chunks.Length);
-                    messageBuilder.Append(Encoding.UTF8.GetString(chunks));
+                    //messageBuilder.Append();
+
+                    Console.WriteLine(Encoding.UTF8.GetString(item) + Environment.NewLine);
                 }
-                while (bytesRead != 0);
             }
-            Console.WriteLine(messageBuilder.ToString());
         }
+
+        //private static void ReadData(TcpClient tcpClient)
+        //{
+        //    StringBuilder messageBuilder = new StringBuilder();
+
+        //    int bytesRead;
+        //    using (NetworkStream ns = tcpClient.GetStream())
+        //    {
+        //        int messageChunkSize = 10;
+        //        do
+        //        {
+        //            byte[] chunks = new byte[messageChunkSize];
+        //            bytesRead = ns.Read(chunks, 0, chunks.Length);
+        //            messageBuilder.Append(Encoding.UTF8.GetString(chunks));
+        //            Console.WriteLine(messageBuilder.ToString());
+        //        }
+        //        while (bytesRead != 0);
+        //    }
+        //}
 
         private static void OnAcceptSameClient(IAsyncResult ar)
         {

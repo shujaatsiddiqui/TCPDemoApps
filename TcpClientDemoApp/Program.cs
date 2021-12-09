@@ -44,12 +44,12 @@ namespace TcpClientDemoApp
         {
             try
             {
-                // TcpClient tcpClient = new TcpClient("54.190.26.32", 58765);
                 TcpClient tcpClient = new TcpClient("localhost", 58765);
+                //TcpClient tcpClient = new TcpClient("2.tcp.ngrok.io", 17326);
                 NetworkStream ns = tcpClient.GetStream();
-
+                Thread.Sleep(5000);
                 new Thread(() => Send(ns)).Start();
-                new Thread(() => Read(ns)).Start();
+                //new Thread(() => Read(ns)).Start();
 
             }
             catch (Exception ex)
@@ -81,7 +81,7 @@ namespace TcpClientDemoApp
             {
                 byte[] messageBytesToSend = Encoding.UTF8.GetBytes("This is a very serious message from the client over TCP." + count);
                 ns.Write(messageBytesToSend, 0, messageBytesToSend.Length);
-                Thread.Sleep(5000);
+                Thread.Sleep(1000);
                 count++;
             }
 

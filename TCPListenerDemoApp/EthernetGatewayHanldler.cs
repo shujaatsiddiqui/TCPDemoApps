@@ -52,8 +52,8 @@ namespace TCPListenerDemoApp
 
                 this.socketGatewayHandler = objSocket.Client;
                 this.socketGatewayHandler.DontFragment = true;
-                this.socketGatewayHandler.SendTimeout = 10000;
-                this.socketGatewayHandler.ReceiveTimeout = 10000;
+                this.socketGatewayHandler.SendTimeout = 1000000;
+                this.socketGatewayHandler.ReceiveTimeout = 1000000;
                 // deviceAddress = IPAddress.Parse(((IPEndPoint)objSocket.Client.RemoteEndPoint).Address.ToString()) + ":" + ((IPEndPoint)objSocket.Client.RemoteEndPoint).Port.ToString();
             }
             catch (Exception ex)
@@ -143,6 +143,7 @@ namespace TCPListenerDemoApp
         /// <returns>byte array</returns>
         public List<byte[]> SyncReceive()
         {
+
             // Receive the response from the remote device.
             /**********************************AsynReceive**************************/
             // Data buffer for incoming data.
@@ -156,6 +157,9 @@ namespace TCPListenerDemoApp
                 //LogObj.WriteLog(LogLevel.Info, "EthernetGateWayHandler: CP Data Received as WorkItem Response CP: " + BitConverter.ToString(bytes) + " @DeviceId: " + DeviceId);
             }
             return recByte;
+
+
+
             /**********************************AsynReceive**************************/
         }
 
@@ -245,23 +249,28 @@ namespace TCPListenerDemoApp
 
 
                             //LogObj.WriteLog(LogLevel.Info, "EthernetGateWayHandler.ReadCallback: CP Data Received as Notification CP: " + BitConverter.ToString(rec) + " @DeviceId: " + DeviceId + " @DeviceAddress: " + DeviceAddress);
-                            if (!string.IsNullOrEmpty(DeviceId))
-                            {
-                                //if (QueueManager.GateMap.ContainsKey(DeviceId))
-                                //{
-                                //    QueueManager.GateMap[DeviceId].Set();
-                                //    //LogObj.WriteLog(LogLevel.Info, "EthernetGateWayHandler.ReadCallback: CP Data Received Event Triggered, @DeviceId: " + DeviceId + " @DeviceAddress: " + DeviceAddress);
-                                //}
-                                //else
-                                //    //LogObj.WriteLog(LogLevel.Info, "EthernetGateWayHandler.ReadCallback: CP Data Received Failed to Trigger Event - Map dont have value, @DeviceId: " + DeviceId + " @DeviceAddress: " + DeviceAddress);
-                            }
-                            else
-                            {
-                                //LogObj.WriteLog(LogLevel.Info, "EthernetGateWayHandler.ReadCallback: CP Data Received Failed to Trigger Event, @DeviceId: " + DeviceId + " @DeviceAddress: " + DeviceAddress);
-                            }
-                            StringBuilder messageBuilder = new StringBuilder();
-                            messageBuilder.Append(Encoding.UTF8.GetString(rec));
-                            Console.WriteLine(messageBuilder.ToString());
+                            //if (!string.IsNullOrEmpty(DeviceId))
+                            //{
+                            //    //if (QueueManager.GateMap.ContainsKey(DeviceId))
+                            //    //{
+                            //    //    QueueManager.GateMap[DeviceId].Set();
+                            //    //    //LogObj.WriteLog(LogLevel.Info, "EthernetGateWayHandler.ReadCallback: CP Data Received Event Triggered, @DeviceId: " + DeviceId + " @DeviceAddress: " + DeviceAddress);
+                            //    //}
+                            //    //else
+                            //    //    //LogObj.WriteLog(LogLevel.Info, "EthernetGateWayHandler.ReadCallback: CP Data Received Failed to Trigger Event - Map dont have value, @DeviceId: " + DeviceId + " @DeviceAddress: " + DeviceAddress);
+                            //}
+                            //else
+                            //{
+                            //    //LogObj.WriteLog(LogLevel.Info, "EthernetGateWayHandler.ReadCallback: CP Data Received Failed to Trigger Event, @DeviceId: " + DeviceId + " @DeviceAddress: " + DeviceAddress);
+                            //}
+                            //StringBuilder messageBuilder = new StringBuilder();
+                            //foreach (var item in recBytes)
+                            //{
+                            //    messageBuilder.Append(Encoding.UTF8.GetString(item));
+                            //}
+                            //Console.WriteLine(messageBuilder.ToString());
+                            //messageBuilder.Append(Encoding.UTF8.GetString(rec));
+                            //Console.WriteLine(messageBuilder.ToString());
                             //foreach (var item in stt)
                             //{
                             // }
